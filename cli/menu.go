@@ -10,6 +10,7 @@ import (
 )
 
 func Run() {
+	services.LoadExpenses()
 	showMenu()
 }
 
@@ -34,7 +35,7 @@ func showMenu() {
 			deleteExpense()
 		} else if input == 4 {
 			generateReport()
-		} else {
+		} else if input==5{
 			fmt.Println("Thank you !!!")
 			stay = 0
 		}
@@ -83,16 +84,41 @@ func viewAllExpenses() {
 		fmt.Println("No Expenses List")
 		return
 	}
-	fmt.Println("============================================================")
+	fmt.Println("======================================================================================================")
+	fmt.Printf("| %-2s | %-35s | %-20s | %-20s| %-10s |\n", "ID", "Description", "Category", "Amount", "Date")
+	fmt.Println("======================================================================================================")
 	for i := 0; i < len(services.ListExpenses()); i++ {
 		x := services.ListExpenses()[i]
-		fmt.Printf("| %d | %-35s | %-10s | %d| %-5s |\n", x.ID, x.Title, x.Category, x.Amount, x.Date)
+		fmt.Printf("| %-2d | %-35s | %-20s | %-20d| %-10s |\n", x.ID, x.Title, x.Category, x.Amount, x.Date)
 	}
-	fmt.Println("============================================================")
+	fmt.Println("======================================================================================================")
 }
 
 func deleteExpense() {
-	fmt.Println("test3")
+	viewAllExpenses()
+	if len(services.ListExpenses())==0{
+		return
+	}
+	var id int
+	stay:=0
+	for stay==0 {
+		fmt.Print("Input expense ID : ")
+		fmt.Scanf("%d\n", &id)
+		for i:=0; i<len(services.ListExpenses()); i++{
+			x:=services.ListExpenses()[i]
+			if(id==x.ID){
+				stay=1
+				break
+			}
+
+		}
+		if stay==0{
+			fmt.Println("There isn't ID matched with existing ID in the Expense List, Please input valid ID !!!")
+		}
+
+	}
+	services.DeleteExpenses(id)
+
 
 }
 func generateReport() {
