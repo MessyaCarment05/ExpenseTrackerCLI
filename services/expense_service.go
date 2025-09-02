@@ -41,8 +41,8 @@ func DeleteExpenses(id int){
 	deletedTitle:=Expenses[index].Title
 	// menggabungkan slice yang sudah mengeluarkan elemen dengan index yang mau dihapus
 	Expenses=append(Expenses[:index], Expenses[index+1:]...)
+	SaveExpenses()
 	fmt.Printf("Successfully delete expense with ID : %d and Description : %s !!!\n", deletedID, deletedTitle)
-
 }
 
 func LoadExpenses(){
