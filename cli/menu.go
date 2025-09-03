@@ -20,9 +20,11 @@ func showMenu() {
 		fmt.Println("===== Expense Tracker =====")
 		fmt.Println("1. Add Expense")
 		fmt.Println("2. View All Expenses")
-		fmt.Println("3. Delete Expense")
-		fmt.Println("4. Generate Report")
-		fmt.Println("5. Exit")
+		fmt.Println("3. View Expenses (Filter by Category)")
+		fmt.Println("4. Delete Expense")
+		fmt.Println("5. Update Expense")
+		fmt.Println("6. Generate Report")
+		fmt.Println("7. Exit")
 		fmt.Print(">> ")
 		var input int
 		fmt.Scanf("%d\n", &input)
@@ -32,10 +34,14 @@ func showMenu() {
 		} else if input == 2 {
 			viewAllExpenses()
 		} else if input == 3 {
-			deleteExpense()
+			viewExpensesByCategory()
 		} else if input == 4 {
+			deleteExpense()
+		} else if input ==5 {
+			updateExpense()
+		} else if input==6{
 			generateReport()
-		} else if input==5{
+		} else if input==7{
 			fmt.Println("Thank you !!!")
 			stay = 0
 		}
@@ -120,6 +126,82 @@ func deleteExpense() {
 	services.DeleteExpenses(id)
 
 
+}
+func updateExpense(){
+	viewAllExpenses()
+	if len(services.ListExpenses())==0{
+		return
+	}
+	var id int
+	var index int
+	stay:=0
+	for stay==0 {
+		fmt.Print("Input expense ID : ")
+		fmt.Scanf("%d\n", &id)
+		for i:=0; i<len(services.ListExpenses()); i++{
+			x:=services.ListExpenses()[i]
+			if(id==x.ID){
+				index=i
+				stay=1
+				break
+			}
+
+		}
+		if stay==0{
+			fmt.Println("There isn't ID matched with existing ID in the Expense List, Please input valid ID !!!")
+		}
+
+	}
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Input expense description : ")
+	newTitle, _ := reader.ReadString('\n')
+	newTitle = strings.TrimSpace(newTitle)
+
+	fmt.Print("Input expense category [Food | Transport | Entertainment | Other] : ")
+	newCategory, _ := reader.ReadString('\n')
+	newCategory = strings.TrimSpace(newCategory)
+	for newCategory != "Food" && newCategory != "Transport" && newCategory != "Entertainment" && newCategory != "Other" {
+		fmt.Print("Input expense category [Food | Transport | Entertainment | Other] : ")
+		newCategory, _ = reader.ReadString('\n')
+		newCategory = strings.TrimSpace(newCategory)
+	}
+
+	fmt.Print("Input expense amount : ")
+	var newAmount int
+	fmt.Scanf("%d\n", &newAmount)
+
+	fmt.Print("Input expense date (YYYY-MM-DD) : ")
+	newDate, _ := reader.ReadString('\n')
+	newDate = strings.TrimSpace(newDate)
+
+	services.UpdateExpenses(id, index, newTitle,newCategory,newAmount,newDate)
+
+}
+func viewExpensesByCategory(){
+	stay:=1
+	for stay==1{
+		fmt.Println("Choose Expense Category : ")
+		fmt.Println("1. Food")
+		fmt.Println("2. Transport")
+		fmt.Println("3. Entertainment")
+		fmt.Println("4. Other")
+		fmt.Println("5. Back")
+		fmt.Print(">> ")
+		var input int
+		fmt.Scanf("%d\n", &input)
+		if input==1{
+			services.ViewByCategory("Food")
+		}else if input==2{
+			services.ViewByCategory("Transport")
+		}else if input==3{
+			services.ViewByCategory("Entertainment")
+		}else if input==4{
+			services.ViewByCategory("Other")
+		}else if input==5{
+			stay=0
+		}
+	}
+	
 }
 func generateReport() {
 	fmt.Println("test4")

@@ -1,16 +1,30 @@
 [
   {
+    "id": 1,
+    "title": "Lunch di kantor",
+    "category": "Food",
+    "amount": 20000,
+    "date": "2025-11-10"
+  },
+  {
     "id": 3,
-    "title": "Membeli alat tulis",
-    "category": "Other",
-    "amount": 15000,
-    "date": "2025-05-10"
+    "title": "Membeli tiket playtopia",
+    "category": "Entertainment",
+    "amount": 75000,
+    "date": "2025-11-10"
   },
   {
     "id": 4,
-    "title": "Membeli tiket bioskop",
-    "category": "Entertainment",
-    "amount": 50000,
-    "date": "2025-11-10"
+    "title": "Transport kereta",
+    "category": "Transport",
+    "amount": 35000,
+    "date": "2025-09-03"
+  },
+  {
+    "id": 5,
+    "title": "Membeli alat tulis",
+    "category": "Other",
+    "amount": 55000,
+    "date": "2025-10-11"
   }
 ]
