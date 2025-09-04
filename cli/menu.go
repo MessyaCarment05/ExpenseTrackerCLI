@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"expense-tracker-cli/models"
 	"expense-tracker-cli/services"
+	"expense-tracker-cli/utils"
 	"fmt"
 	"os"
 	"strings"
@@ -50,6 +51,7 @@ func showMenu() {
 
 }
 
+
 func inputExpense() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Input expense description : ")
@@ -72,6 +74,11 @@ func inputExpense() {
 	fmt.Print("Input expense date (YYYY-MM-DD) : ")
 	date, _ := reader.ReadString('\n')
 	date = strings.TrimSpace(date)
+	for !utils.IsValidDate(date){
+		fmt.Print("Input expense date (YYYY-MM-DD) : ")
+		date, _ = reader.ReadString('\n')
+		date = strings.TrimSpace(date)
+	}
 
 	expense := models.Expense{
 		Title:    title,
@@ -173,6 +180,11 @@ func updateExpense(){
 	fmt.Print("Input expense date (YYYY-MM-DD) : ")
 	newDate, _ := reader.ReadString('\n')
 	newDate = strings.TrimSpace(newDate)
+	for !utils.IsValidDate(newDate){
+		fmt.Print("Input expense date (YYYY-MM-DD) : ")
+		newDate, _ = reader.ReadString('\n')
+		newDate = strings.TrimSpace(newDate)
+	}
 
 	services.UpdateExpenses(id, index, newTitle,newCategory,newAmount,newDate)
 
@@ -180,7 +192,7 @@ func updateExpense(){
 func viewExpensesByCategory(){
 	stay:=1
 	for stay==1{
-		fmt.Println("Choose Expense Category : ")
+		fmt.Println("Choose Expenses Category : ")
 		fmt.Println("1. Food")
 		fmt.Println("2. Transport")
 		fmt.Println("3. Entertainment")
@@ -203,7 +215,47 @@ func viewExpensesByCategory(){
 	}
 	
 }
+
+
 func generateReport() {
-	fmt.Println("test4")
+	stay:=1
+	for stay==1{
+		fmt.Println("Choose Expenses Report")
+		fmt.Println("1. All Expenses Report")
+		fmt.Println("2. Report per Category")
+		fmt.Println("3. Back")
+		var input int
+		fmt.Scanf("%d\n", &input)
+		if input ==1 {
+			
+		}else if input==2{
+			stay2:=1
+			for stay2==1{
+				fmt.Println("Choose Expenses Category : ")
+				fmt.Println("1. Food")
+				fmt.Println("2. Transport")
+				fmt.Println("3. Entertainment")
+				fmt.Println("4. Other")
+				fmt.Println("5. Back")
+				fmt.Print(">> ")
+				var input2 int
+				fmt.Scanf("%d\n", &input2)
+				if input2==1{
+					
+				}else if input2==2{
+					
+				}else if input2==3{
+					
+				}else if input2==4{
+					
+				}else if input2==5{
+					stay=0
+				}
+			}
+
+		}else if input==3{
+			stay=0
+		}
+	}
 
 }

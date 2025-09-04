@@ -155,6 +155,10 @@ func ViewByCategory(category string){
 	}
 }
 
+func GenerateAllReport(){
+	
+}
+
 func LoadExpenses(){
 	err:=utils.LoadJSON(dataFile, &Expenses)
 	if err!=nil{
