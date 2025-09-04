@@ -1,9 +1,11 @@
 package services
 
 import (
+	"encoding/csv"
 	"expense-tracker-cli/models"
 	"expense-tracker-cli/utils"
 	"fmt"
+	"os"
 	"path/filepath"
 )
 
@@ -156,6 +158,16 @@ func ViewByCategory(category string){
 }
 
 func GenerateAllReport(){
+	filename:="all_expenses_report.csv"
+	file,err:=os.Create(filename)
+	if err!=nil{
+		fmt.Println("Failed export report to CSV : ", err)
+		return
+	}
+	defer file.Close()
+
+	writer:=csv.NewWriter(file)
+	defer writer.Flush()
 	
 }
 
