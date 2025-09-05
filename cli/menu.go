@@ -24,8 +24,9 @@ func showMenu() {
 		fmt.Println("3. View Expenses (Filter by Category)")
 		fmt.Println("4. Delete Expense")
 		fmt.Println("5. Update Expense")
-		fmt.Println("6. Generate Report")
-		fmt.Println("7. Exit")
+		fmt.Println("6. Expenses Summary")
+		fmt.Println("7. Generate Report")
+		fmt.Println("8. Exit")
 		fmt.Print(">> ")
 		var input int
 		fmt.Scanf("%d\n", &input)
@@ -41,8 +42,10 @@ func showMenu() {
 		} else if input ==5 {
 			updateExpense()
 		} else if input==6{
-			generateReport()
+			expensesSummary()
 		} else if input==7{
+			generateReport()
+		} else if input==8{
 			fmt.Println("Thank you !!!")
 			stay = 0
 		}
@@ -88,13 +91,11 @@ func inputExpense() {
 	}
 
 	services.AddExpenses(expense)
-	// fmt.Println("Jumlah expense:", len(services.ListExpenses()))
-
 }
 
 func viewAllExpenses() {
 	if len(services.ListExpenses()) == 0 {
-		fmt.Println("No Expenses List")
+		fmt.Println("There isn't any Expenses on the List")
 		return
 	}
 	fmt.Println("======================================================================================================")
@@ -126,7 +127,7 @@ func deleteExpense() {
 
 		}
 		if stay==0{
-			fmt.Println("There isn't ID matched with existing ID in the Expense List, Please input valid ID !!!")
+			fmt.Println("There isn't any ID that matched with existing ID in the Expense List, Please input valid ID !!!")
 		}
 
 	}
@@ -155,7 +156,7 @@ func updateExpense(){
 
 		}
 		if stay==0{
-			fmt.Println("There isn't ID matched with existing ID in the Expense List, Please input valid ID !!!")
+			fmt.Println("There isn't any ID that matched with existing ID in the Expense List, Please input valid ID !!!")
 		}
 
 	}
@@ -192,6 +193,10 @@ func updateExpense(){
 func viewExpensesByCategory(){
 	stay:=1
 	for stay==1{
+		if len(services.Expenses)==0{
+			fmt.Println("There isn't any Expenses on the List")
+			break
+		}
 		fmt.Println("Choose Expenses Category : ")
 		fmt.Println("1. Food")
 		fmt.Println("2. Transport")
@@ -216,7 +221,9 @@ func viewExpensesByCategory(){
 	
 }
 
-
+func expensesSummary(){
+	services.ExpensesSummary()
+}
 func generateReport() {
 	stay:=1
 	for stay==1{
@@ -224,13 +231,19 @@ func generateReport() {
 		fmt.Println("1. All Expenses Report")
 		fmt.Println("2. Report per Category")
 		fmt.Println("3. Back")
+		fmt.Print(">> ")
 		var input int
 		fmt.Scanf("%d\n", &input)
 		if input ==1 {
-			
+			services.GenerateAllReport()
 		}else if input==2{
+			
 			stay2:=1
 			for stay2==1{
+				if len(services.Expenses)==0{
+					fmt.Println("There isn't any Expenses on the List")
+					break
+				}
 				fmt.Println("Choose Expenses Category : ")
 				fmt.Println("1. Food")
 				fmt.Println("2. Transport")
@@ -241,15 +254,15 @@ func generateReport() {
 				var input2 int
 				fmt.Scanf("%d\n", &input2)
 				if input2==1{
-					
+					services.GenerateCategoryReport("Food")
 				}else if input2==2{
-					
+					services.GenerateCategoryReport("Transport")
 				}else if input2==3{
-					
+					services.GenerateCategoryReport("Entertainment")
 				}else if input2==4{
-					
+					services.GenerateCategoryReport("Other")
 				}else if input2==5{
-					stay=0
+					stay2=0
 				}
 			}
 

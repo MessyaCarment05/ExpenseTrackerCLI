@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 )
 
 //save temp expenses
@@ -71,7 +73,7 @@ func ViewByCategory(category string){
 			}
 		}
 		if countFood==0{
-			fmt.Println("No Expenses with Food Category")
+			fmt.Println("There isn't any Expenses with Food Category")
 			return
 		}
 		fmt.Println("======================================================================================================")
@@ -94,7 +96,7 @@ func ViewByCategory(category string){
 			}
 		}
 		if countTransport==0{
-			fmt.Println("No Expenses with Transport Category")
+			fmt.Println("There isn't any Expenses with Transport Category")
 			return
 		}
 		fmt.Println("======================================================================================================")
@@ -117,7 +119,7 @@ func ViewByCategory(category string){
 			}
 		}
 		if countEntertainment==0{
-			fmt.Println("No Expenses with Entertainment Category")
+			fmt.Println("There isn't any Expenses with Entertainment Category")
 			return
 		}
 		fmt.Println("======================================================================================================")
@@ -140,7 +142,7 @@ func ViewByCategory(category string){
 			}
 		}
 		if countOther==0{
-			fmt.Println("No Expenses with Other Category")
+			fmt.Println("There isn't any Expenses with Other Category")
 			return
 		}
 		fmt.Println("======================================================================================================")
@@ -157,8 +159,50 @@ func ViewByCategory(category string){
 	}
 }
 
+func ExpensesSummary(){
+	var amountTotal int=0
+	var amountFoodTotal int=0
+	var amountTransportTotal int=0
+	var amountEntertainmentTotal int=0
+	var amountOtherTotal int=0
+	if len(Expenses)==0{
+		fmt.Println("There isn't any Expenses on the List")
+		return
+	}
+	fmt.Println("Expenses Summary")
+	fmt.Println("======================================================================================================")
+	fmt.Printf("| %-2s | %-35s | %-20s | %-20s| %-10s |\n", "ID", "Description", "Category", "Amount", "Date")
+	fmt.Println("======================================================================================================")
+	for i := 0; i < len(Expenses); i++ {
+		x := Expenses[i]
+		fmt.Printf("| %-2d | %-35s | %-20s | %-20d| %-10s |\n", x.ID, x.Title, x.Category, x.Amount, x.Date)
+		amountTotal+=x.Amount
+		if x.Category=="Food"{
+			amountFoodTotal+=x.Amount
+		}else if x.Category=="Transport"{
+			amountTransportTotal+=x.Amount
+		}else if x.Category=="Entertainment"{
+			amountEntertainmentTotal+=x.Amount
+		}else if x.Category=="Other"{
+			amountOtherTotal+=x.Amount
+		}
+	}
+	fmt.Println("======================================================================================================")
+	fmt.Println("Total Amount :", amountTotal)
+	fmt.Println("Total Amount Detail :")
+	fmt.Println("Total Food Amount :",amountFoodTotal)
+	fmt.Println("Total Transport Amount :",amountTransportTotal)
+	fmt.Println("Total Entertainment Amount :",amountEntertainmentTotal)
+	fmt.Println("Total Other Amount :",amountOtherTotal)
+}
+
 func GenerateAllReport(){
-	filename:="all_expenses_report.csv"
+
+	if len(Expenses)==0{
+		fmt.Println("There isn't any Expenses on the List")
+		return
+	}
+	filename:="storage/all_expenses_report.csv"
 	file,err:=os.Create(filename)
 	if err!=nil{
 		fmt.Println("Failed export report to CSV : ", err)
@@ -168,7 +212,72 @@ func GenerateAllReport(){
 
 	writer:=csv.NewWriter(file)
 	defer writer.Flush()
+
+	// header CSV report
+	writer.Write([]string{"ID", "Description", "Category", "Amount", "Date"})
 	
+	// push data to report
+	for i:=0; i<len(Expenses); i++{
+		x:=Expenses[i]
+		record:=[]string{
+			strconv.Itoa(x.ID),
+			x.Title,
+			x.Category,
+			strconv.Itoa(x.Amount),
+			x.Date,
+		}
+		writer.Write(record)
+	}
+
+	fmt.Println("Successfully generated all expenses report in", filename)
+}
+
+func GenerateCategoryReport(category string){
+	countCategory:=0
+	for i:=0; i<len(Expenses); i++{
+		a:=Expenses[i]
+		if a.Category==category{
+			countCategory++
+		}
+	}
+
+	if countCategory==0{
+		fmt.Printf("There isn't any Expenses with %s Category\n", category)
+		return
+	}
+
+	filename:=fmt.Sprintf("storage/expenses_report_%s.csv", strings.ToLower(category))
+	file,err:=os.Create(filename)
+	if err!=nil{
+		fmt.Println("Failed export report to CSV : ", err)
+		return
+	}
+
+	defer file.Close()
+
+	writer:=csv.NewWriter(file)
+	defer writer.Flush()
+
+	// header CSV 
+	writer.Write([]string{"ID", "Description", "Category", "Amount", "Date"})
+	for i:=0;i<len(Expenses); i++{
+		x:=Expenses[i]
+		if x.Category==category{
+			record:=[]string{
+				strconv.Itoa(x.ID),
+				x.Title,
+				x.Category, 
+				strconv.Itoa(x.Amount),
+				x.Date,
+
+			}
+			writer.Write(record)
+		}
+		
+	}
+	fmt.Println("Successfully generated all expenses report in", filename)
+
+
 }
 
 func LoadExpenses(){
