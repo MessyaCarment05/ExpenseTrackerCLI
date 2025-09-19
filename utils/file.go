@@ -21,7 +21,7 @@ func LoadJSON(filename string, target interface{}) error{
 		return err
 	}
 
-	// kalau file expenses.go masih kosong langsung return nil
+	// kalau file expenses.json masih kosong langsung return nil
 	if len(dataList)==0{
 		return nil
 	}
