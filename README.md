@@ -1,11 +1,11 @@
-﻿# 📝 Expense Tracker (CLI App)
+# 📝 Expense Tracker (CLI App)
 
-**Expense Tracker** is a command-line application built with **Golang** to record and manage personal expenses. It allows you to add, update, edit, and view expenses directly from the terminal. All expense data is stored in a **JSON file** so it persists between runs.
+**Expense Tracker** is a command-line application built with **Go 1.22.0** to record and manage personal expenses. It allows you to add, update, delete, and view expenses directly from the terminal. All expense data is stored in a **JSON file** so it persists between runs.
 
 ## ✨ Features
 - **Add Expense** – Add a new expense entry  
 - **Update Expense** – Update details of an existing expense  
-- **Edit Expense** – Modify expense information easily  
+- **Delete Expense** – Remove an existing expense  
 - **View All Expenses** – Display all recorded expenses  
 - **View Expenses per Category** – Filter and view expenses by category  
 - **Expenses Summary** – View an overall summary including totals per category  
@@ -20,5 +20,3 @@ All expense data is saved in a local JSON file, read and written directly by the
 
 ## 🚀 Purpose  
 This application helps users track their expenses in a lightweight terminal environment while providing summaries and CSV reports for better financial insight.
-
-
